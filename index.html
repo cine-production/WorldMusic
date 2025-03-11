@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Music !</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#342765">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="description" content="Une application PWA simple">
+    <link rel="shortcut icon" href="WorldMusic.png" type="image/x-icon">
+    <link rel="apple-touch-icon" href="WorldMusic.png">
+    <style>
+        body {
+            /* height: 100vh; */
+            margin: 0;
+            padding: 0;
+            background: rgb(12, 32, 68);
+            background: linear-gradient(9deg, rgba(12, 32, 68, 1) 0%, rgba(0, 0, 59, 1) 35%, rgba(64, 0, 87, 1) 100%);
+            color: #ffffff;
+            font-family: sans-serif;
+            margin-bottom: 40px;
+        }
+
+        .ordi {
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            align-content: center;
+            flex-wrap: wrap;
+            text-align: center;
+            color: white;
+            z-index: 10000;
+            position: relative;
+            background: linear-gradient(9deg, rgb(0 0 0) 35%, rgb(43 43 43) 100%);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0px;
+            /* box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); */
+            position: relative;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+
+        .logo {
+            height: 50px;
+            margin-left: 15px;
+        }
+
+        .logo img {
+            height: 100%;
+            width: auto;
+            border-radius: 8px;
+        }
+
+        .search-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+
+        .search-icon {
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            transition: opacity 0.3s ease;
+        }
+
+        .search-input {
+            position: absolute;
+            right: 0;
+            width: 0;
+            padding: 0;
+            border: none;
+            border-bottom: 2px solid #ffffff;
+            outline: none;
+            font-size: 16px;
+            transition: width 0.3s ease;
+            background: transparent;
+            border-radius: 0;
+        }
+
+        .search-container.active .search-input {
+            width: 200px;
+            padding: 5px 10px;
+        }
+
+        .search-container.active .search-icon {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        @media (min-width: 992px) {}
+
+        @media (max-width: 991px) {
+            .ordi {
+                display: none;
+            }
+        }
+
+        .content {
+            margin: 15px;
+        }
+
+        .moods,
+        .themes h3 {
+            margin-top: 50px;
+        }
+
+        .blockGenres {
+            width: 30%;
+            margin: 7px 0px;
+        }
+
+        .blockGenres img {
+            width: 100%;
+        }
+
+        .blockContentGenres {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .blockMoods {
+            width: 30%;
+            margin: 7px 0px;
+        }
+
+        .blockMoods img {
+            width: 100%;
+        }
+
+        .blockContentMoods {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
+        .textBlock {
+            background-color: #2f2f2f;
+            font-size: 11px;
+            padding: 8px;
+            top: -3%;
+            position: relative;
+            font-family: sans-serif;
+        }
+
+        .textBlock p {
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="ordi">
+        <h1>Ce site n'est pas encore disponible sur ordinateur !</h1>
+        <h2>Essayez-la sur votre télephone</h2>
+    </div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <img src="WorldMusic.png" alt="Logo">
+        </div>
+        <div class="search-container">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                <g id="SVGRepo_iconCarrier">
+                    <path
+                        d="M11 6C13.7614 6 16 8.23858 16 11M16.6588 16.6549L21 21M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                        stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                </g>
+            </svg>
+            <input type="text" class="search-input" placeholder="Rechercher...">
+        </div>
+    </nav>
+
+
+    <div class="content">
+        <div class="genres">
+            <h3>Genres</h3>
+            <div class="blockContentGenres">
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/2wkH3KMZuoZWxzhvklOlMM/d546434d6ed4933e6549a7db1afd143c/ES_Main_Playlist_Pop.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/18b3IOThShnj6HN20zKUgU/4ad96343247657a27ce369deaa04628d/ES_Main_Playlist_Jazz.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/5h5VJLEG9rcREHm3Xx6waa/f7917b668aad101bb715daece899b71b/ES_Main_Playlist_Electronic.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/175BdHfBeCJMB7Bwip7mSr/ab80ded9170230caadcd6992fe356056/ES_Main_Playlist_HipHop.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/1HILDNQS6KtqLfz01vHunD/af0032c46f7176009087989a654b2434/ES_Main_Playlist_Funk.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/3u3U9aqKWMpNWp1ukBeKwk/c5cadc1f67d1dbcdd32a11f87b680f7c/ES_Main_Playlist_Country.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/7nKy0Yyg19n8S0dnMRlRM8/b56ab00770803d218a1cf54ee246bef0/ES_Main_Playlist_Rock.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/3s5UzIH3OC4nY1kSG25HGR/62e873406098f4c6bc9c4b6af1241adf/ES_Main_Playlist_Classical.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/7SUjapeofcrJktIBx1qc8/25a1c437f7464d9ada15cf071ea74774/ES_Main_Playlist_RnB.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/3HKzFBMKJcJpbZbPXoIJw8/6ec42ef773d0772f8f589160c16d14bb/ES_Main_Playlist_Soul.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/nWXk6qfTwWkhL5S4PYi3f/b4a5effa3ef3c68f6af8da9cf643fefc/ES_Main_Playlist_Disco.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+                <div class="blockGenres">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/1LJ28qHVpxj2dRRfHVUY5K/1f477ecc67792e4b2b4052317cfdbfa5/ES_Main_Playlist_Acoustic.png?w=225&fm=webp&q=80"
+                        alt="">
+                </div>
+            </div>
+        </div>
+        <div class="moods">
+            <h3>Moods</h3>
+            <div class="blockContentMoods">
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/1X38FU9facwLOQt5MpUB7u/130559f3ca54f94d90dc44f96a731ddc/Mood_-_Happy_-_solid.png?w=225&fm=webp&q=80"
+                        alt="">
+                    <div class="textBlock">
+                        <p>Happy</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/5ZV75WwOEvJtrSdfM1TXvz/e3894805e37dd5ffc928da0c72345615/Mood_-_Dreamy_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Dreamy</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/2Ka9Ixc8qJaSCmw151mWos/21b478ee164fb1c7a5b2a8175271c49e/Mood_-_Epic_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Epic</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/5H8sffi2enFczjnpbCyjSx/da72562e88e9069a65b534849bbb7bcb/Mood_-_Laid_Back_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Laid Back</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/765wxQXmwWJywymaIhiIaZ/49ce6c0347c372432c1568c7af5c862b/Mood_-_Euphoric_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Euphoric</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/29oxJNhfDRwVhAv0KKwP2J/18e89d2400a541850d844a4a76578088/Mood_-_Quirky_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Quirky</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/6NZ87GRuHgMYGPSvxvkNdw/174418a0be93ef438f3015206359cef8/Mood_-_Suspense_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Suspense</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/2XVl5zGh9zJivppZnKyzNc/5bfed277b541bc54719ffc47f0a1c9ef/Mood_-_Running_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Running</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/6UvByrPbJk4kCaJvgL1qTe/fbcf45035bf8a01535d5072fef465eb3/Mood_-_Relaxing_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Relaxing</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/4wU0wX57Qka31TuSd9j0e1/e338ddd3f0592c295c77338f06f817a9/Mood_-_Mysterious_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Mysterious</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/5plVq6R0agJhPuyKK0wjkv/26c01b1597af404dca401685f6a90f0f/Mood_-_Sentimental_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Sentimental</p>
+                    </div>
+                </div>
+                <div class="blockMoods">
+                    <img src="https://images.ctfassets.net/ojtnytzl1djm/4OOP4jefCfy3QStl86MJqZ/acbff4cabc380ed90fee3f4a07302aa8/Mood_-_Sad_-_solid.png?w=225&fm=webp&q=80" alt="">
+                    <div class="textBlock">
+                        <p>Sad</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="themes">
+            <h3>Themes</h3>
+        </div> -->
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const searchContainer = document.querySelector('.search-container');
+            const searchIcon = document.querySelector('.search-icon');
+            const searchInput = document.querySelector('.search-input');
+
+            searchIcon.addEventListener('click', () => {
+                searchContainer.classList.toggle('active');
+                if (searchContainer.classList.contains('active')) {
+                    searchInput.focus();
+                }
+            });
+
+            // Ferme la recherche quand on clique en dehors
+            document.addEventListener('click', (e) => {
+                if (!searchContainer.contains(e.target) &&
+                    searchContainer.classList.contains('active')) {
+                    searchContainer.classList.remove('active');
+                }
+            });
+
+            // Empêche la propagation du clic sur l'input
+            searchInput.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        });
+
+        $(document).ready(function () {
+            setTimeout(function () { test(); });
+
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(function (registration) {
+                        console.log('Service Worker enregistré avec succès:', registration);
+                    })
+                    .catch(function (error) {
+                        console.log('Échec de l\'enregistrement du Service Worker:', error);
+                    });
+            }
+        });
+
+        $(window).on('resize', function () {
+            setTimeout(function () { test(); }, 100);
+        });
+
+        $(".navbar-toggler").click(function () {
+            $(".navbar-collapse").slideToggle(300);
+            setTimeout(function () { test(); });
+        });
+    </script>
+</body>
+
+</html>

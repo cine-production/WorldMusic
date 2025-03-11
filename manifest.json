@@ -1,0 +1,21 @@
+{
+    "name": "World Music",
+    "short_name": "WM",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#84f08b",
+    "theme_color": "#84f08b",
+    "description": "Une application qui répertorie toutes les musiques d'Epidemicsound",
+    "icons": [
+      {
+        "src": "WorldMusic.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "WorldMusic.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
