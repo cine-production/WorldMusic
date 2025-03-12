@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="description" content="Une application PWA simple">
-    <link rel="shortcut icon" href="WorldMusic.png" type="image/x-icon">
+    <link rel="shortcut icon" id="dynamic-favicon" href="WorldMusic.png" type="image/x-icon">
     <link rel="apple-touch-icon" href="WorldMusic.png">
     <style>
         body {
@@ -26,22 +26,21 @@
         }
 
         .ordi {
-    height: 100vh !important;
-    font-family: Arial, Helvetica, sans-serif;
-    display: flex
-;
-    align-items: center;
-    flex-direction: column;
-    height: 100%;
-    justify-content: center;
-    align-content: center;
-    flex-wrap: wrap;
-    text-align: center;
-    color: white;
-    z-index: 10000;
-    position: relative;
-    background: linear-gradient(9deg, rgb(0 0 0) 35%, rgb(43 43 43) 100%);
-}
+            height: 100vh !important;
+            font-family: Arial, Helvetica, sans-serif;
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            height: 100%;
+            justify-content: center;
+            align-content: center;
+            flex-wrap: wrap;
+            text-align: center;
+            color: white;
+            z-index: 10000;
+            position: relative;
+            background: linear-gradient(9deg, rgb(0 0 0) 35%, rgb(43 43 43) 100%);
+        }
 
         .navbar {
             display: flex;
@@ -169,6 +168,283 @@
         .textBlock p {
             margin: 0;
         }
+
+
+
+
+        /* Supprimer le CSS de l'overlay précédent et ajouter ceci dans la balise <style> */
+        .main-content,
+        .music-content {
+            transition: opacity 0.3s ease;
+        }
+
+        /* Dans la balise <style>, mettez à jour les sections .main-content, .music-content et ajoutez les nouvelles règles */
+.content {
+    position: relative;
+    overflow: hidden;
+}
+
+.main-content, .music-content {
+    width: 100%;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.main-content {
+    position: relative;
+    opacity: 1;
+}
+
+.music-content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateX(100%); /* Départ hors de l'écran à droite */
+    opacity: 0;
+}
+
+.main-content.hidden {
+    transform: translateX(-100%); /* Déplace à gauche */
+    opacity: 0;
+}
+
+.music-content.visible {
+    transform: translateX(0); /* Revient à sa position normale */
+    opacity: 1;
+}
+
+        .content.hidden {
+            opacity: 0;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .back-btn svg {
+            fill: none;
+        }
+
+        .back-btn h3 {
+            margin: 0;
+        }
+
+        .music-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Dans la balise <style>, mettez à jour la section .music-item et ajoutez ces styles */
+.music-item {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px;
+    border-radius: 8px;
+    position: relative;
+}
+
+.music-item img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 4px;
+}
+
+.music-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.music-info h4 {
+    margin: 0 0 5px 0;
+    font-size: 14px;
+}
+
+.music-info p {
+    margin: 0;
+    font-size: 12px;
+    color: #ddd;
+}
+
+.music-actions {
+    display: flex
+;
+    gap: 5px;
+    align-items: center;
+    flex-direction: row-reverse;
+}
+
+.music-actions svg {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    fill: #fff;
+}
+
+.time-bpm {
+    font-size: 12px;
+    color: #ddd;
+    text-align: right; /* Alignement à droite pour le texte */
+}
+.time-bpm span {
+    display: block; /* Place chaque élément (temps et BPM) sur une nouvelle ligne */
+}
+
+
+
+.player-overlay {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 87%;
+    z-index: 2000;
+    padding: 25px 15px 25px 15px;
+    /* display: none; */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.3);
+    margin: calc(30px - 20px);
+    margin-bottom: 30px;
+    border-radius: 20px;
+    background: linear-gradient(9deg, rgb(28 28 28) 35%, rgb(43 43 43) 100%);
+    border: 1px #2f2f2f solid;
+    opacity: 0; /* Commence invisible */
+    transform: translateY(100%); /* Commence en bas hors écran */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Transition fluide */
+}
+
+.player-overlay.active {
+    opacity: 1 !important; /* Devient visible */
+    transform: translateY(0) !important; /* Glisse vers le haut */
+}
+
+.player-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.player-content {
+    display: flex
+;
+    width: 100%;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+#player-image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 5px;
+    position: absolute;
+    left: 15px;
+}
+
+.player-controls {
+    display: flex;
+    gap: 15px;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+
+.control-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+#current-time, #remaining-time {
+    font-size: 12px;
+    color: #ddd;
+    min-width: 40px;
+    text-align: center;
+}
+
+
+#progress-bar {
+    flex: 1;
+    -webkit-appearance: none;
+    height: 5px;
+    border-radius: 5px;
+    background: #3b3b3b;
+    outline: none;
+}
+
+#progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: linear-gradient(0deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+    cursor: pointer;
+}
+.mini-player {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: rgba(12, 32, 68, 0.95);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2001;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.mini-player.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.mini-player svg {
+    width: 30px;
+    height: 30px;
+    fill: url(#gradientAnim);
+    stroke: url(#gradientAnim);
+    transition: transform 0.3s ease;
+}
+
+/* État en lecture : agrandissement et effet néon */
+.mini-player.playing svg {
+    transform: scale(1.2);
+    filter: drop-shadow(0 0 5px #6199d2c0) drop-shadow(0 0 10px #9fe4839c);
+}
+
+/* État en pause : gris et taille normale */
+.mini-player:not(.playing) svg {
+    fill: #808080;
+    stroke: #808080;
+    filter: none;
+}
+
+/* Animation fluide des couleurs (non directement appliquée, gérée par JS) */
+/* Animation fluide des couleurs (non directement appliquée, gérée par JS) */
+
     </style>
 </head>
 
@@ -199,195 +475,611 @@
 
 
     <div class="content">
-        <div class="genres">
-            <h3>Genres</h3>
-            <div class="blockContentGenres">
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/2wkH3KMZuoZWxzhvklOlMM/d546434d6ed4933e6549a7db1afd143c/ES_Main_Playlist_Pop.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/18b3IOThShnj6HN20zKUgU/4ad96343247657a27ce369deaa04628d/ES_Main_Playlist_Jazz.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/5h5VJLEG9rcREHm3Xx6waa/f7917b668aad101bb715daece899b71b/ES_Main_Playlist_Electronic.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/175BdHfBeCJMB7Bwip7mSr/ab80ded9170230caadcd6992fe356056/ES_Main_Playlist_HipHop.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/1HILDNQS6KtqLfz01vHunD/af0032c46f7176009087989a654b2434/ES_Main_Playlist_Funk.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/3u3U9aqKWMpNWp1ukBeKwk/c5cadc1f67d1dbcdd32a11f87b680f7c/ES_Main_Playlist_Country.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/7nKy0Yyg19n8S0dnMRlRM8/b56ab00770803d218a1cf54ee246bef0/ES_Main_Playlist_Rock.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/3s5UzIH3OC4nY1kSG25HGR/62e873406098f4c6bc9c4b6af1241adf/ES_Main_Playlist_Classical.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/7SUjapeofcrJktIBx1qc8/25a1c437f7464d9ada15cf071ea74774/ES_Main_Playlist_RnB.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/3HKzFBMKJcJpbZbPXoIJw8/6ec42ef773d0772f8f589160c16d14bb/ES_Main_Playlist_Soul.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/nWXk6qfTwWkhL5S4PYi3f/b4a5effa3ef3c68f6af8da9cf643fefc/ES_Main_Playlist_Disco.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-                <div class="blockGenres">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/1LJ28qHVpxj2dRRfHVUY5K/1f477ecc67792e4b2b4052317cfdbfa5/ES_Main_Playlist_Acoustic.png?w=225&fm=webp&q=80"
-                        alt="">
-                </div>
-            </div>
-        </div>
-        <div class="moods">
-            <h3>Moods</h3>
-            <div class="blockContentMoods">
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/1X38FU9facwLOQt5MpUB7u/130559f3ca54f94d90dc44f96a731ddc/Mood_-_Happy_-_solid.png?w=225&fm=webp&q=80"
-                        alt="">
-                    <div class="textBlock">
-                        <p>Happy</p>
+        <div class="main-content">
+            <div class="genres">
+                <h3>Genres</h3>
+                <div class="blockContentGenres">
+                    <div class="blockGenres" id="Pop">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/2wkH3KMZuoZWxzhvklOlMM/d546434d6ed4933e6549a7db1afd143c/ES_Main_Playlist_Pop.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/5ZV75WwOEvJtrSdfM1TXvz/e3894805e37dd5ffc928da0c72345615/Mood_-_Dreamy_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Dreamy</p>
+                    <div class="blockGenres" id="Jazz">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/18b3IOThShnj6HN20zKUgU/4ad96343247657a27ce369deaa04628d/ES_Main_Playlist_Jazz.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/2Ka9Ixc8qJaSCmw151mWos/21b478ee164fb1c7a5b2a8175271c49e/Mood_-_Epic_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Epic</p>
+                    <div class="blockGenres" id="Electronic">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/5h5VJLEG9rcREHm3Xx6waa/f7917b668aad101bb715daece899b71b/ES_Main_Playlist_Electronic.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/5H8sffi2enFczjnpbCyjSx/da72562e88e9069a65b534849bbb7bcb/Mood_-_Laid_Back_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Laid Back</p>
+                    <div class="blockGenres" id="HipHop">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/175BdHfBeCJMB7Bwip7mSr/ab80ded9170230caadcd6992fe356056/ES_Main_Playlist_HipHop.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/765wxQXmwWJywymaIhiIaZ/49ce6c0347c372432c1568c7af5c862b/Mood_-_Euphoric_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Euphoric</p>
+                    <div class="blockGenres" id="Funk">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/1HILDNQS6KtqLfz01vHunD/af0032c46f7176009087989a654b2434/ES_Main_Playlist_Funk.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/29oxJNhfDRwVhAv0KKwP2J/18e89d2400a541850d844a4a76578088/Mood_-_Quirky_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Quirky</p>
+                    <div class="blockGenres" id="Country">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/3u3U9aqKWMpNWp1ukBeKwk/c5cadc1f67d1dbcdd32a11f87b680f7c/ES_Main_Playlist_Country.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/6NZ87GRuHgMYGPSvxvkNdw/174418a0be93ef438f3015206359cef8/Mood_-_Suspense_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Suspense</p>
+                    <div class="blockGenres" id="Rock">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/7nKy0Yyg19n8S0dnMRlRM8/b56ab00770803d218a1cf54ee246bef0/ES_Main_Playlist_Rock.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/2XVl5zGh9zJivppZnKyzNc/5bfed277b541bc54719ffc47f0a1c9ef/Mood_-_Running_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Running</p>
+                    <div class="blockGenres" id="Classical">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/3s5UzIH3OC4nY1kSG25HGR/62e873406098f4c6bc9c4b6af1241adf/ES_Main_Playlist_Classical.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/6UvByrPbJk4kCaJvgL1qTe/fbcf45035bf8a01535d5072fef465eb3/Mood_-_Relaxing_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Relaxing</p>
+                    <div class="blockGenres" id="RnB">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/7SUjapeofcrJktIBx1qc8/25a1c437f7464d9ada15cf071ea74774/ES_Main_Playlist_RnB.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/4wU0wX57Qka31TuSd9j0e1/e338ddd3f0592c295c77338f06f817a9/Mood_-_Mysterious_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Mysterious</p>
+                    <div class="blockGenres" id="Soul">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/3HKzFBMKJcJpbZbPXoIJw8/6ec42ef773d0772f8f589160c16d14bb/ES_Main_Playlist_Soul.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/5plVq6R0agJhPuyKK0wjkv/26c01b1597af404dca401685f6a90f0f/Mood_-_Sentimental_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Sentimental</p>
+                    <div class="blockGenres" id="Disco">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/nWXk6qfTwWkhL5S4PYi3f/b4a5effa3ef3c68f6af8da9cf643fefc/ES_Main_Playlist_Disco.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
-                </div>
-                <div class="blockMoods">
-                    <img src="https://images.ctfassets.net/ojtnytzl1djm/4OOP4jefCfy3QStl86MJqZ/acbff4cabc380ed90fee3f4a07302aa8/Mood_-_Sad_-_solid.png?w=225&fm=webp&q=80" alt="">
-                    <div class="textBlock">
-                        <p>Sad</p>
+                    <div class="blockGenres" id="Acoustic">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/1LJ28qHVpxj2dRRfHVUY5K/1f477ecc67792e4b2b4052317cfdbfa5/ES_Main_Playlist_Acoustic.png?w=225&fm=webp&q=80"
+                            alt="">
                     </div>
                 </div>
             </div>
+            <div class="moods">
+                <h3>Moods</h3>
+                <div class="blockContentMoods">
+                    <div class="blockMoods" id="Happy">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/1X38FU9facwLOQt5MpUB7u/130559f3ca54f94d90dc44f96a731ddc/Mood_-_Happy_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Happy</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Dreamy">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/5ZV75WwOEvJtrSdfM1TXvz/e3894805e37dd5ffc928da0c72345615/Mood_-_Dreamy_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Dreamy</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Epic">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/2Ka9Ixc8qJaSCmw151mWos/21b478ee164fb1c7a5b2a8175271c49e/Mood_-_Epic_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Epic</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Laid_Back">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/5H8sffi2enFczjnpbCyjSx/da72562e88e9069a65b534849bbb7bcb/Mood_-_Laid_Back_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Laid Back</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Euphoric">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/765wxQXmwWJywymaIhiIaZ/49ce6c0347c372432c1568c7af5c862b/Mood_-_Euphoric_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Euphoric</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Quirky">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/29oxJNhfDRwVhAv0KKwP2J/18e89d2400a541850d844a4a76578088/Mood_-_Quirky_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Quirky</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Suspense">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/6NZ87GRuHgMYGPSvxvkNdw/174418a0be93ef438f3015206359cef8/Mood_-_Suspense_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Suspense</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Running">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/2XVl5zGh9zJivppZnKyzNc/5bfed277b541bc54719ffc47f0a1c9ef/Mood_-_Running_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Running</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Relaxing">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/6UvByrPbJk4kCaJvgL1qTe/fbcf45035bf8a01535d5072fef465eb3/Mood_-_Relaxing_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Relaxing</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Mysterious">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/4wU0wX57Qka31TuSd9j0e1/e338ddd3f0592c295c77338f06f817a9/Mood_-_Mysterious_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Mysterious</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Sentimental">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/5plVq6R0agJhPuyKK0wjkv/26c01b1597af404dca401685f6a90f0f/Mood_-_Sentimental_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Sentimental</p>
+                        </div>
+                    </div>
+                    <div class="blockMoods" id="Sad">
+                        <img src="https://images.ctfassets.net/ojtnytzl1djm/4OOP4jefCfy3QStl86MJqZ/acbff4cabc380ed90fee3f4a07302aa8/Mood_-_Sad_-_solid.png?w=225&fm=webp&q=80"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Sad</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <!-- <div class="themes">
+        <div class="music-content">
+            <div class="back-btn">
+                <svg viewBox="0 0 24 24" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 18L9 12L15 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <h3 id="music-title"></h3>
+            </div>
+            <div class="music-list" id="music-list">
+                <!-- Les musiques seront ajoutées ici dynamiquement -->
+            </div>
+        </div>
+            <!-- <div class="themes">
             <h3>Themes</h3>
         </div> -->
-    </div>
+        </div>
+        <div class="player-overlay">
+            <div class="player-container">
+                <div class="player-content">
+                    <img id="player-image" src="" alt="Artwork">
+                    <div class="player-controls">
+                        <button id="prev-btn" class="control-btn">
+                            <svg viewBox="0 -2 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>previous [#ffffff]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-104.000000, -3805.000000)" fill="#ffffff"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M59.9990013,3645.86816 L59.9990013,3652.13116 C59.9990013,3652.84516 58.8540013,3653.25316 58.2180013,3652.82516 L53.9990013,3650.14016 L53.9990013,3652.13116 C53.9990013,3652.84516 53.4260013,3653.25316 52.7900013,3652.82516 L48.4790013,3649.69316 C47.9650013,3649.34616 47.7980013,3648.65316 48.3120013,3648.30616 L52.7900013,3645.17516 C53.4260013,3644.74616 53.9990013,3645.15416 53.9990013,3645.86816 L53.9990013,3647.85916 L58.2180013,3645.17516 C58.8540013,3644.74616 59.9990013,3645.15416 59.9990013,3645.86816" id="previous-[#ffffff]"> </path> </g> </g> </g> </g></svg>
+                        </button>
+                        <button id="play-pause-btn" class="control-btn">
+                            <svg id="play-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M21.4086 9.35258C23.5305 10.5065 23.5305 13.4935 21.4086 14.6474L8.59662 21.6145C6.53435 22.736 4 21.2763 4 18.9671L4 5.0329C4 2.72368 6.53435 1.26402 8.59661 2.38548L21.4086 9.35258Z" fill="#ffffff"></path> </g></svg>
+                            <svg id="pause-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M2 6C2 4.11438 2 3.17157 2.58579 2.58579C3.17157 2 4.11438 2 6 2C7.88562 2 8.82843 2 9.41421 2.58579C10 3.17157 10 4.11438 10 6V18C10 19.8856 10 20.8284 9.41421 21.4142C8.82843 22 7.88562 22 6 22C4.11438 22 3.17157 22 2.58579 21.4142C2 20.8284 2 19.8856 2 18V6Z" fill="#ffffff"></path> <path d="M14 6C14 4.11438 14 3.17157 14.5858 2.58579C15.1716 2 16.1144 2 18 2C19.8856 2 20.8284 2 21.4142 2.58579C22 3.17157 22 4.11438 22 6V18C22 19.8856 22 20.8284 21.4142 21.4142C20.8284 22 19.8856 22 18 22C16.1144 22 15.1716 22 14.5858 21.4142C14 20.8284 14 19.8856 14 18V6Z" fill="#ffffff"></path> </g></svg>
+                        </button>
+                        <button id="next-btn" class="control-btn">
+                            <svg viewBox="0 -2 12 12" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>next [#ffffff]</title> <desc>Created with Sketch.</desc> <defs> </defs> <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd"> <g id="Dribbble-Light-Preview" transform="translate(-144.000000, -3805.000000)" fill="#ffffff"> <g id="icons" transform="translate(56.000000, 160.000000)"> <path d="M99.684,3649.69353 L95.207,3652.82453 C94.571,3653.25353 94,3652.84553 94,3652.13153 L94,3650.14053 L89.78,3652.82453 C89.145,3653.25353 88,3652.84553 88,3652.13153 L88,3645.86853 C88,3645.15453 89.145,3644.74653 89.78,3645.17453 L94,3647.85953 L94,3645.86853 C94,3645.15453 94.571,3644.74653 95.207,3645.17453 L99.516,3648.30653 C100.03,3648.65353 100.198,3649.34653 99.684,3649.69353" id="next-[#ffffff]"> </path> </g> </g> </g> </g></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="progress-container">
+                    <span id="current-time">0:00</span>
+                    <input type="range" id="progress-bar" min="0" value="0" step="1">
+                    <span id="remaining-time">0:00</span>
+                </div>
+                <audio id="audio-player" style="display: none;"></audio>
+            </div>
+        </div>
+        <div class="mini-player">
+            <svg class="mini-player-svg" width="200px" height="200px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="gradientAnim" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" id="stop1"  />
+                        <stop offset="100%" id="stop2"  />
+                    </linearGradient>
+                </defs>
+                <g fill="url(#gradientAnim)" stroke="url(#gradientAnim)">
+                    <path d="M13,4V20a1,1,0,0,1-2,0V4a1,1,0,0,1,2,0ZM8,5A1,1,0,0,0,7,6V18a1,1,0,0,0,2,0V6A1,1,0,0,0,8,5ZM4,7A1,1,0,0,0,3,8v8a1,1,0,0,0,2,0V8A1,1,0,0,0,4,7ZM16,5a1,1,0,0,0-1,1V18a1,1,0,0,0,2,0V6A1,1,0,0,0,16,5Zm4,2a1,1,0,0,0-1,1v8a1,1,0,0,0,2,0V8A1,1,0,0,0,20,7Z" />
+                </g>
+            </svg>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script>
 
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
+            // Remplacer tout le contenu de la balise <script> par ceci :
+                document.addEventListener('DOMContentLoaded', () => {
+    const searchContainer = document.querySelector('.search-container');
+    const searchIcon = document.querySelector('.search-icon');
+    const searchInput = document.querySelector('.search-input');
+    const mainContent = document.querySelector('.main-content');
+    const musicContent = document.querySelector('.music-content');
+    const musicList = document.querySelector('#music-list');
+    const musicTitle = document.querySelector('#music-title');
+    const backBtn = document.querySelector('.back-btn');
+    const playerOverlay = document.querySelector('.player-overlay');
+    const playerImage = document.querySelector('#player-image');
+    const audioPlayer = document.querySelector('#audio-player');
+    const playPauseBtn = document.querySelector('#play-pause-btn');
+    const playIcon = document.querySelector('#play-icon');
+    const pauseIcon = document.querySelector('#pause-icon');
+    const prevBtn = document.querySelector('#prev-btn');
+    const nextBtn = document.querySelector('#next-btn');
+    const progressBar = document.querySelector('#progress-bar');
+    const currentTimeDisplay = document.querySelector('#current-time');
+    const remainingTimeDisplay = document.querySelector('#remaining-time');
+    const dynamicFavicon = document.querySelector('#dynamic-favicon');
+    const miniPlayer = document.querySelector('.mini-player');
+    const stop1 = document.getElementById('stop1');
+    const stop2 = document.getElementById('stop2');
 
-        document.addEventListener('DOMContentLoaded', () => {
-            const searchContainer = document.querySelector('.search-container');
-            const searchIcon = document.querySelector('.search-icon');
-            const searchInput = document.querySelector('.search-input');
+    let currentIndex = 0;
+    let currentMusiques = [];
+    let timeoutId = null;
+    let animationFrameId = null;
+    let animationTime = 0;
 
-            searchIcon.addEventListener('click', () => {
-                searchContainer.classList.toggle('active');
-                if (searchContainer.classList.contains('active')) {
-                    searchInput.focus();
-                }
-            });
+    // Gestion de la recherche
+    searchIcon.addEventListener('click', () => {
+        searchContainer.classList.toggle('active');
+        if (searchContainer.classList.contains('active')) {
+            searchInput.focus();
+        }
+    });
 
-            // Ferme la recherche quand on clique en dehors
-            document.addEventListener('click', (e) => {
-                if (!searchContainer.contains(e.target) &&
-                    searchContainer.classList.contains('active')) {
-                    searchContainer.classList.remove('active');
-                }
-            });
+    document.addEventListener('click', (e) => {
+        if (!searchContainer.contains(e.target) && 
+            searchContainer.classList.contains('active')) {
+            searchContainer.classList.remove('active');
+        }
+    });
 
-            // Empêche la propagation du clic sur l'input
-            searchInput.addEventListener('click', (e) => {
-                e.stopPropagation();
-            });
+    searchInput.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+
+    // Gestion des blocks
+    const blocks = document.querySelectorAll('.blockGenres, .blockMoods');
+    blocks.forEach(block => {
+        block.addEventListener('click', () => {
+            const category = block.id;
+            const type = block.classList.contains('blockGenres') ? 'Genres' : 'Moods';
+            loadMusic(category, type);
+            mainContent.classList.add('hidden');
+            musicContent.classList.add('visible');
         });
+    });
 
-        $(document).ready(function () {
-            setTimeout(function () { test(); });
+    // Retour à la page principale (sans masquer l'overlay)
+    backBtn.addEventListener('click', () => {
+        musicContent.classList.remove('visible');
+        mainContent.classList.remove('hidden');
+    });
 
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.register('/service-worker.js')
-                    .then(function (registration) {
-                        console.log('Service Worker enregistré avec succès:', registration);
-                    })
-                    .catch(function (error) {
-                        console.log('Échec de l\'enregistrement du Service Worker:', error);
-                    });
+    // Restaurer l'overlay et attendre 6 secondes avant de revenir au mini-player
+    miniPlayer.addEventListener('click', () => {
+        clearTimeout(timeoutId); // Annuler la temporisation précédente
+        playerOverlay.classList.add('active');
+        miniPlayer.classList.remove('active');
+        // Nouvelle temporisation de 6 secondes pour redevenir mini-player
+        timeoutId = setTimeout(() => {
+            playerOverlay.classList.remove('active');
+            miniPlayer.classList.add('active');
+        }, 6000);
+    });
+
+    // Chargement des musiques
+    async function loadMusic(category, type) {
+        try {
+            const response = await fetch('musique.json');
+            const musiques = await response.json();
+            
+            currentMusiques = musiques.filter(music => 
+                music.type === type && music.categories === category
+            );
+
+            musicTitle.textContent = category;
+            musicList.innerHTML = '';
+
+            currentMusiques.forEach((music, index) => {
+                const musicItem = document.createElement('div');
+                musicItem.className = 'music-item';
+                musicItem.innerHTML = `
+                    <img src="${music.image}" alt="${music.name}">
+                    <div class="music-info">
+                        <h4>${music.name}</h4>
+                        <p>${music.artiste}</p>
+                    </div>
+                    <div class="music-actions">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4.5V19.5M12 19.5L7.5 15M12 19.5L16.5 15" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 4.5C12 3.67157 12.6716 3 13.5 3C14.3284 3 15 3.67157 15 4.5C15 5.32843 14.3284 6 13.5 6C12.6716 6 12 5.32843 12 4.5ZM12 19.5C12 18.6716 12.6716 18 13.5 18C14.3284 18 15 18.6716 15 19.5C15 20.3284 14.3284 21 13.5 21C12.6716 21 12 20.3284 12 19.5ZM12 11.25C12 10.4216 12.6716 9.75 13.5 9.75C14.3284 9.75 15 10.4216 15 11.25C15 12.0784 14.3284 12.75 13.5 12.75C12.6716 12.75 12 12.0784 12 11.25Z" fill="#fff"/>
+                        </svg>
+                        <span class="time-bpm"><span>${music.time}</span><span>${music.bpm} BPM</span></span>
+                    </div>
+                `;
+                musicItem.addEventListener('click', () => showPlayer(index));
+                musicList.appendChild(musicItem);
+            });
+
+            if (currentMusiques.length === 0) {
+                musicList.innerHTML = '<p>Aucune musique trouvée pour cette catégorie</p>';
             }
+        } catch (error) {
+            console.error('Erreur lors du chargement des musiques:', error);
+            musicList.innerHTML = '<p>Erreur lors du chargement des musiques</p>';
+        }
+    }
+
+    // Afficher le player (avec transition)
+    function showPlayer(index) {
+        miniPlayer.classList.remove('active');
+        currentIndex = index;
+        const music = currentMusiques[currentIndex];
+        playerImage.src = music.image;
+        audioPlayer.src = music.url;
+        if (!playerOverlay.classList.contains('active')) {
+            playerOverlay.classList.add('active'); // Afficher avec transition
+        }
+        audioPlayer.play().catch(error => console.error('Erreur de lecture:', error));
+        updatePlayPauseIcon();
+
+        // Mettre à jour le favicon
+        dynamicFavicon.href = music.image;
+
+        // Mettre à jour le titre de la page
+        document.title = `${music.name} | ${music.artiste}`;
+
+        // Mettre à jour les métadonnées MediaSession pour le widget iOS avec une URL explicite
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: music.name,
+                artist: music.artiste,
+                artwork: [
+                    { src: music.image, sizes: '96x96', type: 'image/png' },
+                    { src: music.image, sizes: '192x192', type: 'image/png' },
+                    { src: music.image, sizes: '512x512', type: 'image/png' }
+                ],
+                url: window.location.href // Utilise l'URL actuelle de la page
+            });
+
+            // Ajouter des actions de contrôle
+            navigator.mediaSession.setActionHandler('play', () => {
+                audioPlayer.play();
+                updatePlayPauseIcon();
+            });
+            navigator.mediaSession.setActionHandler('pause', () => {
+                audioPlayer.pause();
+                updatePlayPauseIcon();
+            });
+            navigator.mediaSession.setActionHandler('previoustrack', () => {
+                currentIndex = (currentIndex - 1 + currentMusiques.length) % currentMusiques.length;
+                showPlayer(currentIndex);
+            });
+            navigator.mediaSession.setActionHandler('nexttrack', () => {
+                currentIndex = (currentIndex + 1) % currentMusiques.length;
+                showPlayer(currentIndex);
+            });
+        }
+
+        // Initialiser la barre de progression
+        audioPlayer.addEventListener('loadedmetadata', () => {
+            progressBar.max = audioPlayer.duration;
+            updateRemainingTime();
         });
 
-        $(window).on('resize', function () {
-            setTimeout(function () { test(); }, 100);
+        audioPlayer.addEventListener('timeupdate', () => {
+            progressBar.value = audioPlayer.currentTime;
+            currentTimeDisplay.textContent = formatTime(audioPlayer.currentTime);
+            updateRemainingTime();
         });
 
-        $(".navbar-toggler").click(function () {
-            $(".navbar-collapse").slideToggle(300);
-            setTimeout(function () { test(); });
+        progressBar.addEventListener('input', () => {
+            audioPlayer.currentTime = progressBar.value;
         });
-    </script>
+
+        // Synchroniser l'icône avec l'état de lecture
+        audioPlayer.addEventListener('play', () => {
+            updatePlayPauseIcon();
+            miniPlayer.classList.add('playing');
+            startAnimation();
+        });
+        audioPlayer.addEventListener('pause', () => {
+            updatePlayPauseIcon();
+            miniPlayer.classList.remove('playing');
+            stopAnimation();
+        });
+
+        // Basculer vers le mini-player après 4 secondes
+        clearTimeout(timeoutId); // Annuler toute temporisation précédente
+        timeoutId = setTimeout(() => {
+            playerOverlay.classList.remove('active');
+            miniPlayer.classList.add('active');
+        }, 4000);
+    }
+
+    // Mettre à jour l'icône play/pause
+    function updatePlayPauseIcon() {
+        if (audioPlayer.paused) {
+            playIcon.style.display = 'block';
+            pauseIcon.style.display = 'none';
+        } else {
+            playIcon.style.display = 'none';
+            pauseIcon.style.display = 'block';
+        }
+    }
+
+    // Mettre à jour le temps restant
+    function updateRemainingTime() {
+        const remaining = audioPlayer.duration - audioPlayer.currentTime;
+        remainingTimeDisplay.textContent = `-${formatTime(remaining)}`;
+    }
+
+    // Formatter le temps (mm:ss)
+    function formatTime(seconds) {
+        const minutes = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+    }
+
+    // Fonction pour démarrer l'animation fluide
+    function startAnimation() {
+        if (!animationFrameId) {
+            animationTime = 0;
+            function animate(time) {
+                animationTime = (animationTime + (time - (animate.lastTime || time)) / 1000) % 7; // 4 secondes de cycle
+                animate.lastTime = time;
+
+                const progress = animationTime / 7;
+                const colorPairs = [
+    ['#ffffcc', '#ffcc99'], // Rose pâle - Vert clair
+    ['#ffcc99', '#ffcccc'], // Vert clair - Bleu ciel
+    ['#ffcccc', '#ff99cc'], // Bleu ciel - Rose lavande
+    ['#ff99cc', '#ffccff'],  // Rose lavande - Jaune crème
+    ['#ffccff', '#cc99ff'],  // Rose lavande - Jaune crème
+    ['#cc99ff', '#ccccff'],  // Rose lavande - Jaune crème
+    ['#ccccff', '#99ccff'],  // Rose lavande - Jaune crème
+    ['#99ccff', '#ccffff'],  // Rose lavande - Jaune crème
+    ['#ccffff', '#99ffcc'],  // Rose lavande - Jaune crème
+    ['#99ffcc', '#ccffcc'],  // Rose lavande - Jaune crème
+    ['#ccffcc', '#ccff99'],  // Rose lavande - Jaune crème
+    ['#ccff99', '#ffffcc']  // Rose lavande - Jaune crème
+];
+                const index = Math.floor(progress * colorPairs.length);
+                const localProgress = (progress * colorPairs.length) % 1;
+
+                const color1 = interpolateColor(colorPairs[index][0], colorPairs[(index + 1) % colorPairs.length][0], localProgress);
+                const color2 = interpolateColor(colorPairs[index][1], colorPairs[(index + 1) % colorPairs.length][1], localProgress);
+
+                stop1.setAttribute('stop-color', color1);
+                stop2.setAttribute('stop-color', color2);
+
+                animationFrameId = requestAnimationFrame(animate);
+            }
+            animationFrameId = requestAnimationFrame(animate);
+        }
+    }
+
+    // Fonction pour arrêter l'animation
+    function stopAnimation() {
+        if (animationFrameId) {
+            cancelAnimationFrame(animationFrameId);
+            animationFrameId = null;
+            stop1.setAttribute('stop-color', '#808080');
+            stop2.setAttribute('stop-color', '#808080');
+        }
+    }
+
+    // Fonction pour interpoler entre deux couleurs
+    function interpolateColor(color1, color2, factor) {
+        const r1 = parseInt(color1.substr(1, 2), 16);
+        const g1 = parseInt(color1.substr(3, 2), 16);
+        const b1 = parseInt(color1.substr(5, 2), 16);
+        const r2 = parseInt(color2.substr(1, 2), 16);
+        const g2 = parseInt(color2.substr(3, 2), 16);
+        const b2 = parseInt(color2.substr(5, 2), 16);
+
+        const r = Math.round(r1 + (r2 - r1) * factor).toString(16).padStart(2, '0');
+        const g = Math.round(g1 + (g2 - g1) * factor).toString(16).padStart(2, '0');
+        const b = Math.round(b1 + (b2 - b1) * factor).toString(16).padStart(2, '0');
+
+        return `#${r}${g}${b}`;
+    }
+
+    // Contrôles du player
+    playPauseBtn.addEventListener('click', () => {
+        if (audioPlayer.paused) {
+            audioPlayer.play().catch(error => console.error('Erreur de lecture:', error));
+        } else {
+            audioPlayer.pause();
+        }
+        updatePlayPauseIcon();
+    });
+
+    prevBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + currentMusiques.length) % currentMusiques.length;
+        showPlayer(currentIndex);
+    });
+
+    nextBtn.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % currentMusiques.length;
+        showPlayer(currentIndex);
+    });
+
+    // Passer à la musique suivante quand la musique se termine
+    audioPlayer.addEventListener('ended', () => {
+        currentIndex = (currentIndex + 1) % currentMusiques.length;
+        showPlayer(currentIndex);
+        miniPlayer.classList.remove('active');
+    });
+
+    // Masquer l'overlay et arrêter la musique quand la page est quittée
+    window.addEventListener('unload', () => {
+        playerOverlay.classList.remove('active');
+        miniPlayer.classList.remove('active');
+        miniPlayer.classList.remove('playing');
+        stopAnimation();
+        audioPlayer.pause();
+        dynamicFavicon.href = 'WorldMusic.png'; // Réinitialiser le favicon
+        document.title = 'World Music !'; // Réinitialiser le titre
+    });
+
+    // Service Worker
+    if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+                console.log('Service Worker enregistré avec succès:', registration);
+            })
+            .catch(error => {
+                console.log('Échec de l\'enregistrement du Service Worker:', error);
+            });
+    }
+});
+
+
+
+
+
+            document.addEventListener('DOMContentLoaded', () => {
+                const searchContainer = document.querySelector('.search-container');
+                const searchIcon = document.querySelector('.search-icon');
+                const searchInput = document.querySelector('.search-input');
+
+                searchIcon.addEventListener('click', () => {
+                    searchContainer.classList.toggle('active');
+                    if (searchContainer.classList.contains('active')) {
+                        searchInput.focus();
+                    }
+                });
+
+                // Ferme la recherche quand on clique en dehors
+                document.addEventListener('click', (e) => {
+                    if (!searchContainer.contains(e.target) &&
+                        searchContainer.classList.contains('active')) {
+                        searchContainer.classList.remove('active');
+                    }
+                });
+
+                // Empêche la propagation du clic sur l'input
+                searchInput.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                });
+            });
+
+            $(document).ready(function () {
+                setTimeout(function () { test(); });
+
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('/service-worker.js')
+                        .then(function (registration) {
+                            console.log('Service Worker enregistré avec succès:', registration);
+                        })
+                        .catch(function (error) {
+                            console.log('Échec de l\'enregistrement du Service Worker:', error);
+                        });
+                }
+            });
+
+            $(window).on('resize', function () {
+                setTimeout(function () { test(); }, 100);
+            });
+
+            $(".navbar-toggler").click(function () {
+                $(".navbar-collapse").slideToggle(300);
+                setTimeout(function () { test(); });
+            });
+        </script>
 </body>
 
 </html>
