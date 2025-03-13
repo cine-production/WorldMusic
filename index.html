@@ -122,7 +122,8 @@
         }
 
         .moods,
-        .themes h3 {
+        .themes,
+        .Artist h3 {
             margin-top: 50px;
         }
 
@@ -156,6 +157,33 @@
             justify-content: space-between;
         }
 
+        .blockArtist {
+    width: 30%;
+    margin: 7px 0px;
+    /* display: flex
+; */
+    flex-direction: column;
+    align-items: center;
+    border-radius: 50%;
+    overflow: hidden;
+    height: 130px;
+}
+
+.blockArtist img {
+    width: 100%;
+    border-radius: 50%;
+    max-height: 130px;
+    object-fit: cover;
+}
+
+
+
+        .blockContentArtist {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+
         .textBlock {
             background-color: #2f2f2f;
             font-size: 11px;
@@ -164,6 +192,20 @@
             position: relative;
             font-family: sans-serif;
         }
+
+        .blockArtist .textBlock {
+    font-size: 11px;
+    padding: 11px;
+    top: -28%;
+    position: relative;
+    font-family: sans-serif;
+    display: flex
+;
+    justify-content: center;
+    background: linear-gradient(0deg, rgb(0 0 0 / 42%) 60%, rgb(89 89 89 / 0%) 100%);
+    font-weight: bold;
+    backdrop-filter: blur(1px);
+}
 
         .textBlock p {
             margin: 0;
@@ -618,6 +660,25 @@
                     </div>
                 </div>
             </div>
+            <div class="Artist">
+                <h3>Artiste</h3>
+                <div class="blockContentArtist">
+                    <div class="blockArtist" id="Joyca">
+                        <img src="https://i.scdn.co/image/ab676161000051747c5108daad288450829f9df9"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Joyca</p>
+                        </div>
+                    </div>
+                    <div class="blockArtist" id="Mastu">
+                        <img src="https://i.scdn.co/image/ab67616100005174be5b9355b030a46d4d85e0fb"
+                            alt="">
+                        <div class="textBlock">
+                            <p>Mastu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="music-content">
             <div class="back-btn">
@@ -728,16 +789,18 @@
     });
 
     // Gestion des blocks
-    const blocks = document.querySelectorAll('.blockGenres, .blockMoods');
-    blocks.forEach(block => {
-        block.addEventListener('click', () => {
-            const category = block.id;
-            const type = block.classList.contains('blockGenres') ? 'Genres' : 'Moods';
-            loadMusic(category, type);
-            mainContent.classList.add('hidden');
-            musicContent.classList.add('visible');
-        });
+    const blocks = document.querySelectorAll('.blockGenres, .blockMoods, .blockArtist');
+blocks.forEach(block => {
+    block.addEventListener('click', () => {
+        const category = block.id;
+        const type = block.classList.contains('blockGenres') ? 'Genres' : 
+                    block.classList.contains('blockMoods') ? 'Moods' : 
+                    block.classList.contains('blockArtist') ? 'Artist' : '';
+        loadMusic(category, type);
+        mainContent.classList.add('hidden');
+        musicContent.classList.add('visible');
     });
+});
 
     // Retour à la page principale (sans masquer l'overlay)
     backBtn.addEventListener('click', () => {
