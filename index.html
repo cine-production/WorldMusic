@@ -880,8 +880,8 @@
 blocks.forEach(block => {
     block.addEventListener('click', () => {
         const category = block.id;
-        const type = block.classList.contains('blockGenres') ? 'Genres' : 
-                    block.classList.contains('blockMoods') ? 'Moods' : 
+        const type = block.classList.contains('blockGenres') ? 'Genres' : '' : 
+                    block.classList.contains('blockMoods') ? 'Moods' : '' : 
                     block.classList.contains('blockArtist') ? 'Artist' : '';
         loadMusic(category, type);
         mainContent.classList.add('hidden');
