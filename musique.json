@@ -18,5 +18,15 @@
         "time": "2:57",
         "image": "https://i.scdn.co/image/ab67616d00001e0227bb766997d5405704b813c7",
         "url": "Music/Pop/Baladeadeux.mp3"
+    },
+    {
+        "name": "anybody can find love",
+        "artiste": "Hkmori",
+        "type": "Moods",
+        "categories": "Loren",
+        "bpm": "120",
+        "time": "2:11",
+        "image": "https://i.scdn.co/image/ab67616d0000485111238a652b0b84067454fa8a",
+        "url": "Music/Moods/Loren/anybodycanfindlove.mp3"
     }
 ]
