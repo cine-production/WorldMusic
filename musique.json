@@ -28,5 +28,15 @@
         "time": "2:11",
         "image": "https://i.scdn.co/image/ab67616d0000485111238a652b0b84067454fa8a",
         "url": "Music/Moods/Loren/anybodycanfindlove.mp3"
+    },
+    {
+        "name": "slide aurora boreal 1.0 slowed",
+        "artiste": "RNBASS444",
+        "type": "Moods",
+        "categories": "Zooryn",
+        "bpm": "120",
+        "time": "2:11",
+        "image": "https://i.scdn.co/image/ab67616d000048514b524cbc04a6beb148f5b8ea",
+        "url": "Music/Moods/Loren/slideauroraboreal10slowed.mp3"
     }
 ]
